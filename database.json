@@ -1,0 +1,8 @@
+{
+    "dev": {
+      "driver": "mysql",
+      "user": "admin",
+      "password":"flower2307",
+      "database":"elmandlarch"
+    }
+  }

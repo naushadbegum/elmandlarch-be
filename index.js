@@ -24,9 +24,11 @@ app.use(
 );
 
 const landingRoutes = require('./routes/landing');
+const luggageRoutes = require('./routes/luggages')
 
 async function main() {
     app.use('/', landingRoutes);
+    app.use('/luggages', luggageRoutes);
 }
 
 main();

@@ -6,7 +6,11 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Image</th>
+            <th>Brand</th>
             <th>Model</th>
+            <th>Material</th>
+            <th>Types</th>
             <th>Cost</th>
             <th>Description</th>
         </tr>
@@ -18,7 +22,21 @@
                 {{this.id}}
             </td>
             <td>
+                <img src="'{{this.thumbnail_url}}" alt='Luggage thumbnail image'/>
+            </td>
+            <td>
+                {{this.brand.brand}}
+            </td>
+            <td>
                 {{this.model}}
+            </td>
+            <td>
+                {{this.material.material}}
+            </td>
+            <td>
+                {{#each this.types}}
+                <span class='badge rounded-pill bg-primary'>{{this.type}}</span>
+                {{/each}}
             </td>
             <td>
                 {{this.cost}}

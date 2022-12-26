@@ -3,6 +3,7 @@ const forms = require("forms");
 // create some shortcuts
 const fields = forms.fields;
 const validators = forms.validators;
+const widgets = forms.widgets;
 
 var bootstrapField = function (name, object) {
     if (!Array.isArray(object.widget.classes)) { object.widget.classes = []; }
@@ -24,7 +25,7 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group">' + label + widget + error + '</div>';
 };
 
-const createLuggageForm = () => {
+const createLuggageForm = (allMaterials = [], allBrands = [], allTypes = []) => {
     return forms.create({
         'model': fields.string({
             required: true,
@@ -48,7 +49,37 @@ const createLuggageForm = () => {
                 label: ['form-label']
             }
         }),
+        'material_id': fields.string({
+            label: 'Material',
+            required: true,
+            errorAfterField: true,
+            widget: widgets.select(),
+            choices: allMaterials
+        }),
+        'brand_id': fields.string({
+            label: 'Brand',
+            required: true,
+            errorAfterField: true,
+            widget: widgets.select(),
+            choices: allBrands
+        }),
+        'types': fields.string({
+            required: true,
+            errorAfterField: true,
+            widget: widgets.multipleSelect(),
+            choices: allTypes
+        }),
+        'image_url': fields.url({
+            required: validators.required('Image required'),
+            errorAfterField: true,
+            validators: [validators.url()],
+            widget: forms.widgets.hidden()
+        }),
+        'thumbnail_url': fields.url({
+            widget: forms.widgets.hidden()
+        })
     })
 };
+
 
 module.exports = {bootstrapField, createLuggageForm}

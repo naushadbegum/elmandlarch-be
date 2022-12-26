@@ -15,34 +15,39 @@ router.get('/', async (req,res)=> {
 
 router.get('/create', async (req,res)=>{
 
-    const allBrands = await Brand.fetchAll().map((brand)=> {
-        return [brand.get('id'), brand.get('brand')];
-    })
+    
 
     const allMaterials = await Material.fetchAll().map((material)=> {
         return [material.get('id'), material.get('material')];
     })
 
+    const allBrands = await Brand.fetchAll().map((brand)=> {
+        return [brand.get('id'), brand.get('brand')];
+    })
+
     const allTypes = await Type.fetchAll().map(type => [type.get('id'), type.get('type')]);
 
-    const luggageForm = createLuggageForm(allBrands, allMaterials, allTypes);
+    const luggageForm = createLuggageForm(allMaterials, allBrands, allTypes);
     res.render('luggages/create',{
-        'form': luggageForm.toHTML(bootstrapField)
+        'form': luggageForm.toHTML(bootstrapField),
+        "cloudinaryName": process.env.CLOUDINARY_NAME,
+        "cloudinaryApiKey": process.env.CLOUDINARY_API_KEY,
+        "cloudinaryPreset": process.env.CLOUDINARY_UPLOAD_PRESET
     })
 });
 
 router.post('/create', async(req,res)=>{
+    const allMaterials = await Material.fetchAll().map((material)=> {
+        return [material.get('id'), material.get('material')];
+    })
+    
     const allBrands = await Brand.fetchAll().map((brand)=> {
         return [brand.get('id'), brand.get('brand')];
     })
 
-    const allMaterials = await Material.fetchAll().map((material)=> {
-        return [material.get('id'), material.get('material')];
-    })
-
     const allTypes = await Type.fetchAll().map(type => [type.get('id'), type.get('type')]);
 
-    const luggageForm = createLuggageForm(allBrands, allMaterials, allTypes);
+    const luggageForm = createLuggageForm(allMaterials, allBrands, allTypes);
 
     luggageForm.handle(req, {
         'success': async (form) => {
@@ -55,6 +60,7 @@ router.post('/create', async(req,res)=>{
             if (types){
                 await luggage.types().attach(types.split(","));
             }
+            req.flash("success_messages", `New Luggage ${luggage.get('model')} has been created`)
             res.redirect('/luggages');
         },
         'error': async (form) => {

@@ -3,6 +3,10 @@ const hbs = require("hbs");
 const wax = require("wax-on");
 require("dotenv").config();
 
+const session = require('express-session');
+const flash = require('connect-flash');
+const FileStore = require('session-file-store')(session);
+
 // create an instance of express app
 let app = express();
 
@@ -23,12 +27,29 @@ app.use(
   })
 );
 
+app.use(session({
+  store: new FileStore(),
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
+
+app.use(flash())
+
+app.use(function (req,res,next){
+  res.locals.success_messages= req.flash("success_messages");
+  res.locals.error_messages = req.flash("error_messages");
+  next();
+})
+
 const landingRoutes = require('./routes/landing');
-const luggageRoutes = require('./routes/luggages')
+const luggageRoutes = require('./routes/luggages');
+const cloudinaryRoutes = require('./routes/cloudinary');
 
 async function main() {
     app.use('/', landingRoutes);
     app.use('/luggages', luggageRoutes);
+    app.use('/cloudinary', cloudinaryRoutes);
 }
 
 main();

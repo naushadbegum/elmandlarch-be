@@ -139,4 +139,59 @@ const createLoginForm = () => {
     })
 }
 
-module.exports = {bootstrapField, createLuggageForm, createRegistrationForm, createLoginForm}
+const createSearchForm = (brands, materials, types) => {
+    return forms.create({
+        'model': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'brand_id': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: brands
+        }),
+        'material_id': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: materials
+        }),
+        'types': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices: types
+        }),
+        'min_cost': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            'validators': [validators.integer()]
+        }),
+        'max_cost': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            'validators': [validators.integer()]
+        })
+    })
+}
+
+module.exports = {bootstrapField, createLuggageForm, createRegistrationForm, createLoginForm, createSearchForm}

@@ -82,4 +82,61 @@ const createLuggageForm = (allMaterials = [], allBrands = [], allTypes = []) => 
 };
 
 
-module.exports = {bootstrapField, createLuggageForm}
+const createRegistrationForm = () => {
+    return forms.create({
+        'name': fields.string({
+                required: true,
+                errorAfterField: true,
+                validators: [validators.maxlength(100)]
+        }),
+        'username': fields.string({
+            required: true,
+            errorAfterField: true,
+            validators: [validators.maxlength(100)]
+        }),
+        'email': fields.string({
+            required: true,
+            errorAfterField: true,
+            validators: [validators.maxlength(320)]
+        }),
+        'password': fields.password({
+            required: true,
+            errorAfterField: true,
+            validators: [validators.maxlength(100)]
+        }),
+        'confirm_password': fields.password({
+            label: 'Re-enter password',
+            required: validators.required('Please enter password again'),
+            errorAfterField: true,
+            validators: [validators.matchField('password'),
+            validators.maxlength(100)]
+        }),
+        'contact_number': fields.string({
+            required: true,
+            errorAfterField: true,
+            widget: widgets.tel(),
+            validators: [validators.maxlength(15)]
+        })
+    })
+}
+
+const createLoginForm = () => {
+    return forms.create({
+        'email': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'password': fields.password({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+    })
+}
+
+module.exports = {bootstrapField, createLuggageForm, createRegistrationForm, createLoginForm}

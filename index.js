@@ -45,11 +45,13 @@ app.use(function (req,res,next){
 const landingRoutes = require('./routes/landing');
 const luggageRoutes = require('./routes/luggages');
 const cloudinaryRoutes = require('./routes/cloudinary');
+const userRoutes = require('./routes/users')
 
 async function main() {
     app.use('/', landingRoutes);
     app.use('/luggages', luggageRoutes);
     app.use('/cloudinary', cloudinaryRoutes);
+    app.use('/users', userRoutes);
 }
 
 main();

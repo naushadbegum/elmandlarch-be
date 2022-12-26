@@ -15,8 +15,6 @@ router.get('/', async (req,res)=> {
 
 router.get('/create', async (req,res)=>{
 
-    
-
     const allMaterials = await Material.fetchAll().map((material)=> {
         return [material.get('id'), material.get('material')];
     })

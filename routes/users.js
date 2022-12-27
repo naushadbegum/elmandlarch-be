@@ -7,6 +7,13 @@ const { User } = require('../models');
 
 const { createRegistrationForm, createLoginForm, bootstrapField } = require('../forms');
 
+const crypto = require('crypto');
+
+const getHashedPassword = (password) => {
+    const sha256 = crypto.createHash('sha256');
+    const hash = sha256.update(password).digest('base64');
+    return hash;
+}
 router.get('/register', (req,res)=>{
     // display the registration form
     const registerForm = createRegistrationForm();
@@ -57,11 +64,9 @@ router.post('/login', async (req, res) => {
                 req.flash("error_messages", "Sorry, the authentication details you provided does not work.")
                 res.redirect('/users/login');
             } else {
-                // check if the password matches
-                if (user.get('password') === form.data.password) {
-                    // add to the session that login succeed
-
-                    // store the user details
+           
+                if (user.get('password') === getHashedPassword(form.data.password)) {
+             
                     req.session.user = {
                         id: user.get('id'),
                         username: user.get('username'),

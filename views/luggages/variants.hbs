@@ -1,0 +1,41 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+<h1>Variants: {{luggage.model}}</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Image</th>
+            <th>Color</th>
+            <th>Dimension</th>
+            <th>Stock</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each variants}}
+        <tr>
+            <td>
+                {{this.id}}
+            </td>
+            <td>
+                <img src="{{this.thumbnail_url}}" alt='Luggage thumbnail image'/>
+            </td>
+            <td>
+                {{this.color.color}}
+            </td>
+            <td>
+                {{this.dimension.dimension}}
+            </td>
+            <td>
+                {{this.stock}}
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{/block}}
+{{/extends}}

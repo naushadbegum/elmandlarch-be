@@ -31,7 +31,34 @@
     {{/each}}
 
     {{/if}}
+<nav class="navbar navbar-expand-sm bg-light">
 
+      <div class="container-fluid">
+        <!-- Links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/luggages">All Luggages</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link 2</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link 3</a>
+          </li>
+        </ul>
+        <div>
+          {{#if user}}
+          Welcome back, {{user.username}} <a href="/users/logout"
+            class="btn btn-danger btn-sm">Logout</a>
+            {{!-- <a href="/cart" class="btn btn-success btn-sm">Cart ({{cartItemCount}})</a> --}}
+          {{else}}
+          Hello guest <a href="/users/login" class="btn btn-success btn-sm">Have
+            an account?</a>
+          {{/if}}
+        </div>
+      </div>
+
+    </nav>
 
     {{#block 'content'}}{{/block}}
   </div>

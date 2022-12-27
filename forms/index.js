@@ -1,5 +1,6 @@
 // import in caolan forms
 const forms = require("forms");
+const { route } = require("../routes/luggages");
 // create some shortcuts
 const fields = forms.fields;
 const validators = forms.validators;
@@ -194,4 +195,37 @@ const createSearchForm = (brands, materials, types) => {
     })
 }
 
-module.exports = {bootstrapField, createLuggageForm, createRegistrationForm, createLoginForm, createSearchForm}
+const createVariantForm = (colors, dimensions) => {
+    return forms.create({
+        'color_id': fields.string({
+            label: 'Color',
+            required: true,
+            errorAfterField: true,
+            widget: widgets.select(),
+            choices: colors
+        }),
+        'dimension_id': fields.string({
+            label: 'Dimension',
+            required: true,
+            errorAfterField: true,
+            widget: widgets.select(),
+            choices: dimensions
+        }),
+        'stock': fields.number({
+            required: true,
+            errorAfterField: true,
+            validators: [validators.integer(), validators.min(0), validators.max(40000)]
+        }),
+        'image_url': fields.url({
+            required: validators.required('image required'),
+            errorAfterField: true,
+            validators: [validators.url()],
+            widget: widgets.hidden()
+        }),
+        'thumbnail_url': fields.url({
+            widget: widgets.hidden()
+        })
+    })
+}
+
+module.exports = {bootstrapField, createLuggageForm, createRegistrationForm, createLoginForm, createSearchForm, createVariantForm}

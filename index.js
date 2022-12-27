@@ -7,6 +7,10 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const FileStore = require('session-file-store')(session);
 
+const csrf = require('csurf');
+
+
+
 // create an instance of express app
 let app = express();
 
@@ -29,7 +33,7 @@ app.use(
 
 app.use(session({
   store: new FileStore(),
-  secret: 'keyboard cat',
+  secret: process.env.SESSION_SECRET_KEY,
   resave: false,
   saveUninitialized: true
 }));
@@ -41,6 +45,23 @@ app.use(function (req,res,next){
   res.locals.error_messages = req.flash("error_messages");
   next();
 })
+
+app.use(csrf());
+
+app.use(function (err, req, res, next) {
+  if (err && err.code == "EBADCSRFTOKEN") {
+      req.flash('error_messages', 'The form has expired. Please try again');
+      res.redirect('back');
+  } else {
+      next()
+  }
+});
+
+app.use(function(req,res,next){
+  res.locals.csrfToken = req.csrfToken();
+  next();
+})
+
 
 const landingRoutes = require('./routes/landing');
 const luggageRoutes = require('./routes/luggages');
@@ -55,6 +76,12 @@ async function main() {
 }
 
 main();
+
+
+app.use(function(req,res,next){
+  res.locals.user = req.session.user;
+  next();
+})
 
 app.listen(3000, () => {
   console.log("Server has started");

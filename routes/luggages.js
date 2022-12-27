@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const { Luggage, Brand, Material, Type } = require('../models')
-const { bootstrapField, createLuggageForm, createSearchForm } = require('../forms');
+const { bootstrapField, createLuggageForm, createSearchForm, createVariantForm } = require('../forms');
+
+const dataLayer = require('../dal/luggages');
+const { checkIfAuthenticated } = require("../middlewares");
 
 router.get('/', async (req, res) => {
 
@@ -25,7 +28,7 @@ router.get('/', async (req, res) => {
         'empty': async (form) => {
 
             let luggages = await q.fetch({
-                withRelated: ['brand', 'material'],
+                withRelated: ['brand', 'material', 'types'],
             })
             res.render('luggages/index', {
                 'luggages': luggages.toJSON(),
@@ -34,7 +37,7 @@ router.get('/', async (req, res) => {
         },
         'error': async (form) => {
             let luggages = await q.fetch({
-                withRelated: ['brand', 'material'],
+                withRelated: ['brand', 'material', 'types'],
             })
             res.render('luggages/index', {
                 'luggages': luggages.toJSON(),
@@ -64,13 +67,13 @@ router.get('/', async (req, res) => {
             }
 
             if(form.data.max_cost){
-                q = q.where('cost', '<=', form.data.max_cost)
+                q.where('cost', '<=', form.data.max_cost)
             }
 
             let luggages = await q.fetch({
-                withRelated: ['brand', 'material'],
+                withRelated: ['brand', 'material', 'types'],
             })
-            res.render('luggages/indes',{
+            res.render('luggages/index',{
                 'luggages': luggages.toJSON(),
                 'form': form.toHTML(bootstrapField)
             })
@@ -79,7 +82,7 @@ router.get('/', async (req, res) => {
 })
 
 
-router.get('/create', async (req, res) => {
+router.get('/create', checkIfAuthenticated, async (req, res) => {
 
             const allMaterials = await Material.fetchAll().map((material) => {
                 return [material.get('id'), material.get('material')];
@@ -100,7 +103,7 @@ router.get('/create', async (req, res) => {
             })
         });
 
-        router.post('/create', async (req, res) => {
+router.post('/create', checkIfAuthenticated, async (req, res) => {
             const allMaterials = await Material.fetchAll().map((material) => {
                 return [material.get('id'), material.get('material')];
             })
@@ -241,6 +244,43 @@ router.post('/:luggage_id/delete', async (req, res) => {
             });
             await luggage.destroy();
             res.redirect('/luggages')
-        })
+        });
+
+router.get('/:luggage_id/variants', async function(req,res){
+    const luggage = ( await dataLayer.getLuggageById(req.params.luggage_id)).toJSON();
+    let variants = await dataLayer.getVariantsByLuggageId(req.params.luggage_id);
+
+    if (variants) {
+        variants = variants.toJSON();
+    }
+    else{
+        variants=[];
+    }
+    console.log(luggage);
+
+    res.render('luggages/variants',{
+        luggage: luggage,
+        variants: variants
+    });
+});
+
+// router.get('/:luggage_id/create-variant', async function(req,res){
+//     const variantForm = createVariantForm()
+//     const luggage = await Luggage.where({
+//         'id': req.params.luggage_id
+//     }).fetch({
+//         require: true,
+//         withRelated: ['brand', 'material', 'types', 'color', 'dimension']
+//     });
+
+//     res.render('luggages/create-variant', {
+//         form: variantForm.toHTML(bootstrapField),
+//         luggage: luggage.toJSON(),
+//         cloudinaryName: process.env.CLOUDINARY_NAME,
+//         cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+//         cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+//     })
+// })
+
 
 module.exports = router;

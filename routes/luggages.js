@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { Luggage, Brand, Material, Type } = require('../models')
+const { Luggage, Brand, Material, Type, Variant } = require('../models')
 const { bootstrapField, createLuggageForm, createSearchForm, createVariantForm } = require('../forms');
 
 const dataLayer = require('../dal/luggages');
@@ -246,17 +246,19 @@ router.post('/:luggage_id/delete', async (req, res) => {
             res.redirect('/luggages')
         });
 
+// error here
+
 router.get('/:luggage_id/variants', async function(req,res){
     const luggage = ( await dataLayer.getLuggageById(req.params.luggage_id)).toJSON();
-    let variants = await dataLayer.getVariantsByLuggageId(req.params.luggage_id);
+    const variants =( await dataLayer.getVariantsByLuggageId(req.params.luggage_id)).toJSON();
 
-    if (variants) {
-        variants = variants.toJSON();
-    }
-    else{
-        variants=[];
-    }
-    console.log(luggage);
+    // if (variants) {
+    //     variants = variants.toJSON();
+    // }
+    // else{
+    //     variants=[];
+    // }
+    // console.log(luggage);
 
     res.render('luggages/variants',{
         luggage: luggage,

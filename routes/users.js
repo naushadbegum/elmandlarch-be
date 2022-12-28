@@ -88,9 +88,16 @@ router.post('/login', async (req, res) => {
     })
 })
 
+router.get('/profile', function(req,res){
+  const user = req.session.user;
+  res.render('users/profile',{
+    'user': user
+  })
+})
+
 router.get('/logout', (req, res) => {
     req.session.user = null;
-    req.flash('success_messages', "Goodbye");
+    req.flash('success_messages', "You have been logged out successfully!");
     res.redirect('/users/login');
 })
 

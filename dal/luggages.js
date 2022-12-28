@@ -25,7 +25,22 @@ const getVariantsByLuggageId = async function (luggageId) {
     return variants;
 }
 
+const getVariantById = async function (variantId) {
+    const variant = await Variant.where({
+        id: variantId
+    }).fetch({
+        require: true,
+        withRelated: [
+            'color',
+            'dimension'
+        ]
+    });
+
+    return variant;
+}
+
 module.exports = {
     getLuggageById,
-    getVariantsByLuggageId
+    getVariantsByLuggageId,
+    getVariantById
 }

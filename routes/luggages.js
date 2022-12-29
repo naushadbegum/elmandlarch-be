@@ -313,6 +313,65 @@ router.post('/:luggage_id/variants/create', async function(req,res){
     });
 });
 
+router.get('/:luggage_id/variants/:variant_id/update', async function (req, res) {
+    // Get variant to be updated
+    const variant = await dataLayer.getVariantById(req.params.variant_id);
+  
+    // Get choices for variant form
+    const choices = await dataLayer.getAllVariantFormChoices();
+  
+    // Create variant form and populate with existing data
+    const variantForm = createVariantForm(choices);
+  
+    variantForm.fields.color_id.value = variant.get('color_id');
+    variantForm.fields.dimension_id.value = variant.get('dimension_id');
+    variantForm.fields.stock.value = variant.get('stock');
+    variantForm.fields.image_url.value = variant.get('image_url');
+    variantForm.fields.thumbnail_url.value = variant.get('thumbnail_url');
+  
+    res.render('luggages/variant-update', {
+      variant: variant.toJSON(),
+      form: variantForm.toHTML(bootstrapField)
+    });
+  });
+  
+  router.post('/:luggage_id/variants/:variant_id/update', async function (req, res) {
+    // Get variant to be updated
+    const variant = await dataLayer.getVariantById(req.params.variant_id);
+  
+    // Get choices for variant form
+    const choices = await dataLayer.getAllVariantFormChoices();
+  
+    // Process variant form
+    const variantForm = createVariantForm(choices);
+    variantForm.handle(req, {
+      success: async function (form) {
+        const result = await dataLayer.updateVariant(req.params.variant_id, form.data);
+  
+        if (!result) {
+          req.flash('error_messages', 'An error occurred when updating. Please try again');
+        }
+        else {
+          req.flash('success_messages', 'Variant successfully updated');
+        }
+  
+        res.redirect(`/luggages/${req.params.luggage_id}/variants`);
+      },
+      error: function (form) {
+        res.render('luggages/update-variant', {
+          variant: variant.toJSON(),
+          form: form.toHTML(bootstrapField)
+        });
+      },
+      empty: function (form) {
+        res.render('luggages/update-variant', {
+          variant: variant.toJSON(),
+          form: form.toHTML(bootstrapField)
+        });
+      }
+    })
+  });
+
 router.get('/:luggage_id/variants/:variant_id/delete', async (req,res)=> {
     const variant = await dataLayer.getVariantById(req.params.variant_id)
     res.render('luggages/variant-delete', {
@@ -333,28 +392,4 @@ router.post('/:luggage_id/variants/:variant_id/delete', async function (req,res)
     res.redirect(`/luggages/${req.params.luggage_id}/variants`);
 })
 
-// router.get('/:luggage_id/variants',async (req,res) =>{
-//     let luggageId = req.params.luggage_id;
-//     console.log(luggageId);
-
-//     const variants = await Variant.collection()
-//     .where({
-//         'luggage_id': luggageId
-//     })
-//     .fetch({
-//         required: true,
-//         withRelated: ['color', 'dimension']
-//     })
-
-//     })
-
-    // let variantId = req.params.variant_id;
-    // let variants = await Variant.where({
-    //     'id': variantId
-    // }).fetch({
-    //     withRelated: ['luggage', 'color', 'dimension']
-    // });
-    // res.render('luggages/variants', {
-    //     'variants': variants.toJSON()
-    // })
 module.exports = router;

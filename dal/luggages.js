@@ -67,6 +67,28 @@ const getAllVariantFormChoices = async function(){
     }
 }
 
+const addVariant = async function (formData) {
+	const variant = new Variant(formData);
+	await variant.save();
+
+	return variant;
+};
+
+const updateVariant = async function (variantId, formData) {
+	// Get variant to be updated
+	const variant = await getVariantById(variantId);
+
+	if (!variant) {
+		return;
+	}
+
+	// Populate variant with new data
+	variant.set(formData);
+	await variant.save();
+
+	return true; // Indicate success
+};
+
 const deleteVariant = async function(variantId) {
     
     const variant = await getVariantById(variantId);
@@ -80,5 +102,7 @@ module.exports = {
     getVariantsByLuggageId,
     getVariantById,
     getAllVariantFormChoices,
-    deleteVariant
+    addVariant,
+    updateVariant,
+    deleteVariant,
 }

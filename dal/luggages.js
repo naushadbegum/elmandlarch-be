@@ -1,4 +1,4 @@
-const {Luggage, Variant} = require('../models');
+const {Luggage, Variant, Color, Dimension} = require('../models');
 
 const getLuggageById = async function (luggageId) {
     const luggage = await Luggage.where({
@@ -39,8 +39,46 @@ const getVariantById = async function (variantId) {
     return variant;
 }
 
+const getAllColors = async function () {
+    const colors = await Color.fetchAll().map((color) => {
+        return [color.get('id'), color.get('color')];
+    });
+
+    return colors;
+}
+
+const getAllDimensions = async function () {
+    const dimensions = await Dimension.fetchAll().map((dimension)=> {
+        return [dimension.get('id'), dimension.get('dimension')];
+    });
+
+    return dimensions;
+}
+
+const getAllVariantFormChoices = async function(){
+    const colors = await getAllColors();
+    const dimensions = await getAllDimensions();
+
+    // console.log(colors, dimensions)
+
+    return {
+        colors,
+        dimensions
+    }
+}
+
+const deleteVariant = async function(variantId) {
+    
+    const variant = await getVariantById(variantId);
+    await variant.destroy();
+
+    return true;
+}
+
 module.exports = {
     getLuggageById,
     getVariantsByLuggageId,
-    getVariantById
+    getVariantById,
+    getAllVariantFormChoices,
+    deleteVariant
 }

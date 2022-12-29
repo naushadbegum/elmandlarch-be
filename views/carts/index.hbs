@@ -1,0 +1,22 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+<h1>My shopping cart</h1>
+
+<ul class="list-group">
+    {{#each shoppingCart}}
+    <li class="list-group-item my-3">
+        <h4>{{this.variant.luggage.model}}</h3>
+            <h5>Cost: {{this.variant.luggage.cost}} </h5>        
+            <h5>Quantity{{this.quantity}}</h5>   
+    </li>
+    {{/each}}
+</ul>
+ <div>
+    <a href="/cart/{{this.variant.id}}/remove" class="btn btn-danger">Remove</a>
+</div>
+
+
+{{/block}}
+
+{{/extends}}

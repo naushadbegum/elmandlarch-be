@@ -66,22 +66,29 @@ app.use(function(req,res,next){
 const landingRoutes = require('./routes/landing');
 const luggageRoutes = require('./routes/luggages');
 const cloudinaryRoutes = require('./routes/cloudinary');
-const userRoutes = require('./routes/users')
+const userRoutes = require('./routes/users');
+const cartRoutes = require('./routes/shoppingCart');
 
 async function main() {
+  app.use(function(req,res,next){
+    res.locals.user = req.session.user;
+    // console.log(res.locals);
+    next();
+  })
     app.use('/', landingRoutes);
     app.use('/luggages', luggageRoutes);
     app.use('/cloudinary', cloudinaryRoutes);
     app.use('/users', userRoutes);
+    app.use('/cart', cartRoutes);
+
 }
+
+
 
 main();
 
 
-app.use(function(req,res,next){
-  res.locals.user = req.session.user;
-  next();
-})
+
 
 app.listen(3000, () => {
   console.log("Server has started");

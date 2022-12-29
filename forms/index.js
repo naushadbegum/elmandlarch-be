@@ -1,6 +1,7 @@
 // import in caolan forms
 const forms = require("forms");
-const { route } = require("../routes/luggages");
+const { OrderStatus } = require("../models");
+// const { route } = require("../routes/luggages");
 // create some shortcuts
 const fields = forms.fields;
 const validators = forms.validators;
@@ -195,21 +196,21 @@ const createSearchForm = (brands, materials, types) => {
     })
 }
 
-const createVariantForm = (colors, dimensions) => {
+const createVariantForm = (choices) => {
     return forms.create({
         'color_id': fields.string({
             label: 'Color',
             required: true,
             errorAfterField: true,
             widget: widgets.select(),
-            choices: colors
+            choices: choices.colors
         }),
         'dimension_id': fields.string({
             label: 'Dimension',
             required: true,
             errorAfterField: true,
             widget: widgets.select(),
-            choices: dimensions
+            choices: choices.dimensions
         }),
         'stock': fields.number({
             required: true,
@@ -228,4 +229,40 @@ const createVariantForm = (colors, dimensions) => {
     })
 }
 
-module.exports = {bootstrapField, createLuggageForm, createRegistrationForm, createLoginForm, createSearchForm, createVariantForm}
+
+const createSearchOrderForm = (orderStatuses) => {
+    return forms.create({
+        'id': fields.string({
+            label: 'Order ID',
+            required: false,
+            errorAfterField: true,
+            validators: [validators.integer()]
+        }),
+        'email': fields.string({
+            label: 'Customer Email',
+            required: false,
+            errorAfterField: true,
+        }),
+        'order_status_id': fields.string({
+            label: 'Order status',
+            required: false,
+            errorAfterField: true,
+            choices: orderStatuses,
+            widget: widgets.select()
+        }),
+    })
+}
+
+const updateOrderForm = (orderStatuses) => {
+    return forms.create({
+        'order_status_id': fields.string({
+            label: 'Order Status',
+            required: true,
+            errorAfterField: true,
+            widget: widgets.select(),
+            choices: orderStatuses
+        })
+    })
+}
+
+module.exports = {bootstrapField, createLuggageForm, createRegistrationForm, createLoginForm, createSearchForm, createVariantForm, createSearchOrderForm, updateOrderForm}

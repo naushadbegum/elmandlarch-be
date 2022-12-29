@@ -1,0 +1,18 @@
+{{#extends 'base'}}
+
+{{#block 'subtitle'}}
+Add Variant
+{{/block}}
+
+{{#block 'content'}}
+
+<h1>Add Variant</h1>
+
+<form method="post">
+  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+  {{{form}}}
+  <input type="submit" value="Add Variant" class="btn btn-primary my-3">
+</form>
+{{/block}}
+
+{{/extends}}

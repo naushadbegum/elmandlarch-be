@@ -2,7 +2,7 @@
 
 {{#block 'content'}}
 <h1>Variants: {{luggage.model}}</h1>
-
+<a href="/luggages/{{luggage.id}}/variants/create" class="btn btn-primary btn-sm">Add Variant</a>
 <table class="table">
     <thead>
         <tr>
@@ -32,6 +32,11 @@
             <td>
                 {{this.stock}}
             </td>
+            <td>
+                <a href="/luggages/{{this.luggage_id}}/variants/{{this.id}}/update" class="btn btn-primary btn-sm">Update</a>
+<a href="/luggages/{{this.luggage_id}}/variants/{{this.id}}/delete" data-luggage-id="{{this.luggage_id}}" data-variant-id="{{this.id}}"
+            class="btn btn-danger btn-sm btn-delete">Delete</a>
+            </td> 
         </tr>
         {{/each}}
     </tbody>

@@ -221,10 +221,10 @@ const createVariantForm = (choices) => {
             required: validators.required('image required'),
             errorAfterField: true,
             validators: [validators.url()],
-            widget: widgets.hidden()
+            widget: forms.widgets.hidden()
         }),
         'thumbnail_url': fields.url({
-            widget: widgets.hidden()
+            widget: forms.widgets.hidden()
         })
     })
 }

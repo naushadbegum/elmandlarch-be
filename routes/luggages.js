@@ -276,7 +276,11 @@ router.get('/:luggage_id/variants/create', async function(req,res){
     const variantForm = createVariantForm(choices);
 
     res.render('luggages/create-variant',{
-        form: variantForm.toHTML(bootstrapField)
+        form: variantForm.toHTML(bootstrapField),
+        "cloudinaryName": process.env.CLOUDINARY_NAME,
+        "cloudinaryApiKey": process.env.CLOUDINARY_API_KEY,
+        "cloudinaryPreset": process.env.CLOUDINARY_UPLOAD_PRESET
+        
     })
 })
 
@@ -309,7 +313,12 @@ router.post('/:luggage_id/variants/create', async function(req,res){
     });
 });
 
-// router.get('')
+router.get('/:luggage_id/variants/:variant_id/delete', async (req,res)=> {
+    const variant = await dataLayer.getVariantById(req.params.variant_id)
+    res.render('luggages/variant-delete', {
+        variant: variant.toJSON()
+    })
+})
 
 router.post('/:luggage_id/variants/:variant_id/delete', async function (req,res){
     const result = await dataLayer.deleteVariant(req.params.variant_id);

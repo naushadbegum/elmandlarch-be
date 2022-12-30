@@ -64,4 +64,6 @@ const updateCartItem = async function (userId, variantId, quantity){
     }
 }
 
+
+
 module.exports= {getCartByUserId, getCartItemByUserAndVariant, createCartItem, removeCartItem, updateCartItem}

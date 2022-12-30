@@ -48,6 +48,15 @@ app.use(function (req,res,next){
 
 app.use(csrf());
 
+const csrfInstance = csrf();
+app.use(function (req,res,next){
+if (req.url === '/checkout/process_payment' || req.url.slice(0.5) == "/api/"){
+  return next()
+}else {
+csrfInstance(req, res, next)
+}
+});
+
 app.use(function (err, req, res, next) {
   if (err && err.code == "EBADCSRFTOKEN") {
       req.flash('error_messages', 'The form has expired. Please try again');
@@ -83,7 +92,7 @@ async function main() {
     app.use('/cloudinary', cloudinaryRoutes);
     app.use('/users', userRoutes);
     app.use('/cart', cartRoutes);
-    app.use('/api/luggages', api.luggages);
+    app.use('/api/luggages',express.json(), api.luggages);
 
 }
 

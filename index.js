@@ -68,6 +68,9 @@ const luggageRoutes = require('./routes/luggages');
 const cloudinaryRoutes = require('./routes/cloudinary');
 const userRoutes = require('./routes/users');
 const cartRoutes = require('./routes/shoppingCart');
+const api = {
+  luggages: require('./routes/api/luggages')
+}
 
 async function main() {
   app.use(function(req,res,next){
@@ -80,6 +83,7 @@ async function main() {
     app.use('/cloudinary', cloudinaryRoutes);
     app.use('/users', userRoutes);
     app.use('/cart', cartRoutes);
+    app.use('/api/luggages', api.luggages);
 
 }
 

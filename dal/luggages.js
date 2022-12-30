@@ -97,6 +97,11 @@ const deleteVariant = async function(variantId) {
     return true;
 }
 
+const getAllLuggages = async () => {
+    return await Luggage.fetchAll();
+}
+
+
 module.exports = {
     getLuggageById,
     getVariantsByLuggageId,
@@ -105,4 +110,5 @@ module.exports = {
     addVariant,
     updateVariant,
     deleteVariant,
+    getAllLuggages
 }

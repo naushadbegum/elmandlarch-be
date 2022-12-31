@@ -61,6 +61,14 @@ const removeCartItem = async function (userId, variantId){
     return await cartDataLayer.removeCartItem(userId, variantId);
 }
 
+const emptyCart = async function (userId) {
+    const cartItems = await getCart(userId);
+    for (let cartItem of cartItems){
+        const variantId = cartItem.get('variant_id');
+        await deleteCartItem(userId, variantId);
+    }
+}
+
 module.exports = {
     CartServices,
     getCurrentStock,
@@ -68,4 +76,5 @@ module.exports = {
     addToCart,
     updateCartItem,
     removeCartItem,
+    emptyCart
 }

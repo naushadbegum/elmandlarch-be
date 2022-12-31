@@ -238,7 +238,7 @@ const createSearchOrderForm = (orderStatuses) => {
             errorAfterField: true,
             validators: [validators.integer()]
         }),
-        'email': fields.string({
+        'customer_email': fields.string({
             label: 'Customer Email',
             required: false,
             errorAfterField: true,

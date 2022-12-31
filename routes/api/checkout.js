@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
-const CartServices = require('../services/cart_services')
-const Stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+const CartServices = require('../../services/cart_services');
+const Stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 
 router.get('/', async(req,res)=> {

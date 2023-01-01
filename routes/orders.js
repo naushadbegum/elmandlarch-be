@@ -9,7 +9,7 @@ router.get('/', async function(req,res){
     const orders = await dataLayer.getAllOrders();
     
     const orderStatuses = await dataLayer.getAllOrderStatuses();
-    orderStatuses.unshilf([0, '-------']);
+    orderStatuses.unshift([0, '-------']);
 
     const choices = {
         orderStatuses

@@ -81,6 +81,7 @@ const orderRoutes = require('./routes/orders');
 const api = {
   luggages: require('./routes/api/luggages'),
   cart: require('./routes/api/cart'),
+  users: require('./routes/api/users')
 }
 
 async function main() {
@@ -97,6 +98,7 @@ async function main() {
     app.use('/api/luggages',express.json(), api.luggages);
     app.use('/api/cart', express.json(), api.cart);
     app.use('/orders', orderRoutes);
+    app.use('/api/users', express.json(), api.users);
 
 }
 

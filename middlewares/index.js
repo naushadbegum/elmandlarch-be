@@ -1,12 +1,33 @@
+const jwt = require('jsonwebtoken');
+
 const checkIfAuthenticated = (req, res, next) => {
-    if (req.session.user){
+    if (req.session.user) {
         next()
-    }else {
+    } else {
         req.flash("error_messages", "You need to sign in to access this page");
         res.redirect('/users/login');
     }
 }
 
+const checkIfAuthenticatedJWT = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+
+        jwt.verify(token, process.env.TOKEN_SECRET, (err, tokenData) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+            req.user = tokenData;
+            next();
+        });
+    } else {
+        res.sendStatus(401);
+    }
+}
+
+
 module.exports = {
-    checkIfAuthenticated
+    checkIfAuthenticated,
+    checkIfAuthenticatedJWT
 }

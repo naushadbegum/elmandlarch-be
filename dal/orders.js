@@ -79,6 +79,23 @@ const updateOrder = async function (orderId, orderData){
     return true;
 }
 
+const getAllOrdersByUserId = async function (userId) {
+    const orders = await Order.collection()
+    .where({
+        user_id: userId
+    }).orderBy('id', 'desc')
+    .fetch({
+        require: false,
+        withRelated: [
+            'user',
+            'orderStatus',
+            'orderItems',
+            'orderItems.variant'
+        ]
+    })
+    return orders;
+}
+
 module.exports = {
     addOrder,
     addOrderItem,
@@ -86,5 +103,6 @@ module.exports = {
     getAllOrderStatuses,
     filterOrdersBySearchFields,
     getOrderById,
-    updateOrder
+    updateOrder,
+    getAllOrdersByUserId
 }

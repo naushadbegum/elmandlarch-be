@@ -46,11 +46,11 @@ app.use(function (req,res,next){
   next();
 })
 
-app.use(csrf());
+// app.use(csrf());
 
 const csrfInstance = csrf();
 app.use(function (req,res,next){
-if (req.url === '/checkout/process_payment' || req.url.slice(0.5) == "/api/"){
+if (req.url == '/checkout/process_payment' || req.url.slice(0.5) == "/api/"){
   return next()
 }else {
 csrfInstance(req, res, next)
@@ -67,7 +67,9 @@ app.use(function (err, req, res, next) {
 });
 
 app.use(function(req,res,next){
-  res.locals.csrfToken = req.csrfToken();
+  if (req.csrfToken){
+    res.locals.csrfToken = req.csrfToken();
+  }
   next();
 })
 
@@ -78,6 +80,7 @@ const cloudinaryRoutes = require('./routes/cloudinary');
 const userRoutes = require('./routes/users');
 const cartRoutes = require('./routes/shoppingCart');
 const orderRoutes = require('./routes/orders');
+const checkoutRoutes = require('./routes/api/checkout');
 const api = {
   luggages: require('./routes/api/luggages'),
   cart: require('./routes/api/cart'),
@@ -95,11 +98,11 @@ async function main() {
     app.use('/cloudinary', cloudinaryRoutes);
     app.use('/users', userRoutes);
     app.use('/cart', cartRoutes);
+    app.use('/orders', orderRoutes);
+    app.use('/checkouts', checkoutRoutes);
     app.use('/api/luggages',express.json(), api.luggages);
     app.use('/api/cart', express.json(), api.cart);
-    app.use('/orders', orderRoutes);
     app.use('/api/users', express.json(), api.users);
-
 }
 
 

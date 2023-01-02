@@ -5,7 +5,7 @@ const Stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 
 router.get('/', async(req,res)=> {
-    const userId = req.user.id;
+    const userId = req.session.user.id;
     let cartItems = (await CartServices.getCart(userId)).toJSON();
 
 // step 1: create line items
@@ -13,7 +13,7 @@ router.get('/', async(req,res)=> {
     let lineItems = [];
     let meta = [];
     for (let cartItem of cartItems){
-        console.log(cartItem);
+        // console.log(cartItem);
 
         const brand = cartItem.variant.luggage.brand.brand;
         const model = cartItem.variant.luggage.model;
@@ -22,7 +22,7 @@ router.get('/', async(req,res)=> {
         const imageUrl = cartItem.variant.image_url;
 
         const lineItemName = `${brand} ${model} (Color: ${color}, (Dimension: ${dimension})`;
-        console.log(lineItemName);
+        // console.log(lineItemName);
 
 
         const lineItem = {
@@ -40,6 +40,8 @@ router.get('/', async(req,res)=> {
         if (imageUrl) {
             lineItem.price_data.product_data.images = [imageUrl]
         }
+
+        
         lineItems.push(lineItem);
 
         meta.push({
@@ -48,25 +50,24 @@ router.get('/', async(req,res)=> {
             quantity: cartItem.quantity
             
         })
-
         };
 
 
 // step 2: create payment
         let metaData = JSON.stringify(meta);
         const payment = {
-            payment_method_types: ['cards', 'paynow'],
+            payment_method_types: ['card', 'paynow'],
             mode: 'payment',
             invoice_creation: {enabled: true},
             line_items: lineItems,
             success_url: process.env.STRIPE_SUCCESS_URL,
             cancel_url: process.env.STRIPE_ERROR_URL,
-            metaData:{
+            metadata:{
                 'orders': metaData
             }
         }
 // step 3: send the payment to stripe
-let stripeSession = await Stripe.checkout.sessions.create(payment)
+let stripeSession = await Stripe.checkout.sessions.create(payment);
 
 res.render('checkouts/checkout',{
     'sessionId': stripeSession.id,

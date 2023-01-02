@@ -4,6 +4,10 @@ const express = require("express");
 const router = express.Router();
 const crypto = require('crypto');
 
+const getAllUsers = async () => {
+	return await User.fetchAll();
+}
+
 const getHashedPassword = (password) => {
     const sha256 = crypto.createHash('sha256');
     const hash = sha256.update(password).digest('base64');
@@ -12,7 +16,7 @@ const getHashedPassword = (password) => {
 
 const getUserByCredentials = async function (formData) {
 	const user = await User.where({
-		username: formData.username,
+		email: formData.email,
 		password: getHashedPassword(formData.password)
 	}).fetch({
 		require: false,
@@ -52,6 +56,7 @@ const isUsernameTaken = async function (username) {
 }
 
 module.exports = {
+	getAllUsers,
     addUser,
 	getUserByCredentials,
 	getBlacklistedToken,

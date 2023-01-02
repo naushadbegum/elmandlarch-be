@@ -37,17 +37,17 @@ router.post(
                 const chargeId = paymentIntent.charges.data[0].id;
 
                 const charge = await Stripe.charges.retrieve(chargeId);
-                const receipt_url = charge.receipt_url;
+                const payment_url = charge.payment_url;
                 const payment_type = charge.payment_method_details.type;
-                const shippingRate = await Stripe.shippingRates.retrieve(
-                    stripeSession.shipping_rate
-                );
+                // const shippingRate = await Stripe.shippingRates.retrieve(
+                //     stripeSession.shipping_rate
+                // );
                 const orderData = {
                     total_cost : stripeSession.amount_total,
                     user_id: userId,
                     order_status_id : 3,
                     payment_type: payment_type,
-                    receipt_url: receipt_url,
+                    payment_url: payment_url,
                     order_date: new Date(charge.created * 1000),
                     payment_intent: stripeSession.payment_intent,
                     shipping_address_line1: stripeSession.shipping.address.line1,

@@ -8,7 +8,7 @@ const flash = require('connect-flash');
 const FileStore = require('session-file-store')(session);
 
 const csrf = require('csurf');
-
+const cors = require('cors')
 
 
 // create an instance of express app
@@ -31,6 +31,8 @@ app.use(
   })
 );
 
+app.use(cors());
+
 app.use(session({
   store: new FileStore(),
   secret: process.env.SESSION_SECRET_KEY,
@@ -51,10 +53,10 @@ app.use(function (req,res,next){
 const csrfInstance = csrf();
 app.use(function (req,res,next){
 if (req.url == '/checkout/process_payment' || req.url.slice(0,5) == "/api/"){
-  console.log("route excluded")
+ console.log("route excluded")
   return next()
 }else {
-  console.log("route not excluded")
+  // console.log("route not excluded")
 csrfInstance(req, res, next)
 }
 });
@@ -101,7 +103,7 @@ async function main() {
     app.use('/users', userRoutes);
     app.use('/cart', cartRoutes);
     app.use('/orders', orderRoutes);
-    app.use('/checkouts', checkoutRoutes);
+    app.use('/checkout', checkoutRoutes);
     app.use('/api/luggages',express.json(), api.luggages);
     app.use('/api/cart', express.json(), api.cart);
     app.use('/api/users', express.json(), api.users);

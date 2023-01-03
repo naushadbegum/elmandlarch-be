@@ -65,7 +65,7 @@ const emptyCart = async function (userId) {
     const cartItems = await getCart(userId);
     for (let cartItem of cartItems){
         const variantId = cartItem.get('variant_id');
-        await deleteCartItem(userId, variantId);
+        await removeCartItem(userId, variantId);
     }
 }
 

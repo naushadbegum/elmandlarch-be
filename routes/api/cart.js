@@ -6,7 +6,7 @@ router.get('/', async(req,res)=>{
     
     const cartItems = await cartServices.getCart(req.session.user.id);
     console.log(req.session.user.id);
-    cartItems = response.toJSON()
+    // cartItems = response.toJSON()
     res.json(cartItems)
 })
 

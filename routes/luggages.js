@@ -183,7 +183,7 @@ router.get('/:luggage_id/update', async (req, res) => {
             })
         });
 
-        router.post('/:luggage_id/update', async (req, res) => {
+router.post('/:luggage_id/update', async (req, res) => {
             const allMaterials = await Material.fetchAll().map((material) => {
                 return [material.get('id'), material.get('material')];
             })
@@ -331,7 +331,11 @@ router.get('/:luggage_id/variants/:variant_id/update', async function (req, res)
   
     res.render('luggages/variant-update', {
       variant: variant.toJSON(),
-      form: variantForm.toHTML(bootstrapField)
+      form: variantForm.toHTML(bootstrapField),
+      "cloudinaryName": process.env.CLOUDINARY_NAME,
+      "cloudinaryApiKey": process.env.CLOUDINARY_API_KEY,
+      "cloudinaryPreset": process.env.CLOUDINARY_UPLOAD_PRESET
+      
     });
   });
   

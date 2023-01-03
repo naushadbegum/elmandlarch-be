@@ -7,7 +7,7 @@ Orders
 {{#block 'content'}}
 <h1 class="mt-3">All Orders</h1>
 
-<div class="accordion mt-5 mb-4 d-lg-none">
+{{!-- <div class="accordion mt-5 mb-4 d-lg-none">
   <div class="accordion-item">
     <div id="search-panel" class="accordion-collapse collapse show" aria-labelledby="search-toggle">
       <div class="accordion-body">
@@ -19,11 +19,11 @@ Orders
       </div>
     </div>
   </div>
-</div>
+</div> --}}
 
 <div class="container-fluid row bg-light px-3 py-3 rounded">
   <div class="d-none d-lg-block col-lg-3 bg-light">
-    <form method="get">
+    <form method="GET">
       <h5>Search Orders</h5>
       {{{form}}}
       <a href="/orders" class="btn btn-secondary mx-1">Reset</a>
@@ -41,7 +41,6 @@ Orders
           <th>Total Cost</th>
           <th>Payment Type</th>
           <th>Shipping Address</th>
-          <th>Shipping Option</th>
           <th>Order Date</th>
           <th>Delivery Date</th>
           <th>Status</th>
@@ -53,11 +52,11 @@ Orders
         {{#each orders}}
         <tr>
           <td>{{this.id}}</td>
-          <td>{{capitalizeAll this.user.name}}</td>
+          <td>{{this.user.name}}</td>
           <td>{{this.user.contact_number}}</td>
           <td>{{this.user.email}}</td>
-          <td>${{divide this.total_cost 100}}</td>
-          <td>{{capitalize this.payment_type}}</td>
+          <td>${{this.total_cost}}</td>
+          <td>{{this.payment_type}}</td>
           <td>
             {{this.shipping_address_line1}}, <br />
             {{#if this.shipping_address_line2}}
@@ -65,10 +64,12 @@ Orders
             {{/if}}
             {{this.shipping_postal}},
           </td>
+          <td>{{this.order_date}}</td>
+          <td>{{this.delivery_date}}</td>
           <td>{{this.orderStatus.order_status}}</td>
           <td>
             <a href='/orders/{{this.id}}/update' class='btn btn-primary btn-sm'>Update</a>
-            <a href="{{this.payment_url}}" target="_blank" class="btn btn-secondary btn-sm">Receipt</a>
+            <a href="{{this.receipt_url}}" target="_blank" class="btn btn-secondary btn-sm">Receipt</a>
           </td>
         </tr>
         {{/each}}

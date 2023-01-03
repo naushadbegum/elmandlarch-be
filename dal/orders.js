@@ -43,16 +43,21 @@ const filterOrdersBySearchFields = async function (form){
         query.where('order_status_id', '=', form.data.order_status_id);
     }
 
-    // if(form.data.customer_email) {
-    //     if(process.env.DB_DRIVER == 'mysql'){
-    //         query.query('join', 'users', 'users.id', 'user_id')
-    //         .where('name', 'like', `%${form.data.customer_email}%`);
-    //     } else {
-    //         query.query('join', 'users', 'users.id', 'user_id')
-    //         .where('email', 'ilike', `%${form.data.customer_email}%`);
-    //     }
-    // }
+    if(form.data.customer_email) {
+        if(process.env.DB_DRIVER == 'mysql'){
+            query.query('join', 'users', 'users.id', 'user_id')
+            .where('name', 'like', `%${form.data.customer_email}%`);
+        } else {
+            query.query('join', 'users', 'users.id', 'user_id')
+            .where('email', 'ilike', `%${form.data.customer_email}%`);
+        }
+    }
 
+    let orders = await query.fetch({
+        withRelated: ['user', 'orderStatus']
+    });
+    console.log("this", orders.toJSON());
+    return orders
 }
 
 

@@ -20,7 +20,7 @@ router.get('/', async function(req,res){
     orderSearchForm.handle(req, {
         success: async function (form) {
             const orders = await dataLayer.filterOrdersBySearchFields(form);
-
+console.log(orders);
             res.render('orders/index',{
                 orders: orders.toJSON(),
                 form: form.toHTML(bootstrapField)

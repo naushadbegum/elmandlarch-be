@@ -9,9 +9,7 @@ router.get('/', async(req,res)=>{
     res.send(await userDataLayer.getAllUsers())
 })
 
-const generateAccessToken = (
-    email, id, role_id, expiresIn
-    ) => {
+const generateAccessToken = (email, id, role_id, secret, expiresIn) => {
     return jwt.sign({
         'email': email,
         'id': id,
@@ -44,6 +42,7 @@ router.get('/username_taken', async function (req,res){
 
 
 router.post('/login', async function(req,res){
+    console.log("correct route", process.env.TOKEN_SECRET)
     const userData = {
         email: req.body.email,
         password: req.body.password

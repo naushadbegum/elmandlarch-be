@@ -17,12 +17,12 @@ router.get('/', async(req,res)=>{
 router.get('/:variant_id/add', async function (req, res) {
     const userId = req.session.user.id;
     const variantId = req.params.variant_id;
-    const quantity = req.body.quantity;
+    // const quantity = req.body.quantity;
 
     await addToCart(
         userId,
         variantId,
-        quantity
+        1
     );
     req.flash("success_messages", "The item has been added");
     res.redirect('/cart/');

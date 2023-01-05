@@ -27,18 +27,67 @@ const getHashedPassword = (password) => {
 
 const { User } = require('../../models');
 
-router.get('/username_taken', async function (req,res){
-    const usernameExists = await userDataLayer.isUsernameTaken(req.query.username);
-    if (usernameExists){
-        res.json({
-            'message': 'already exist'
-        })
-    }else{
-        res.json({
-            'message': 'available'
-        })
+// router.get('/username_taken', async function (req,res){
+//     const usernameExists = await userDataLayer.isUsernameTaken(req.query.username);
+//     if (usernameExists){
+//         res.json({
+//             'message': 'already exist'
+//         })
+//     }else{
+//         res.json({
+//             'message': 'available'
+//         })
+//     }
+// })
+
+router.post('/register', async function (req, res){
+    let error = {};
+
+    const name = req.body.name;
+    if(name.length == 0 || name.length > 200){
+            error.name = 'Name must be less than 200 characters'
     }
+
+    const username = req.body.username;
+    if(username.length == 0 || username.length > 200){
+            error.length = 'Username must be less than 200 characters'
+    }
+
+    const email = req.body.email;
+    if(!email.includes("@") || !email.includes(".")){
+            error.email = 'Enter a valid email eg.sample@sample.com'
+    }
+
+    const password = req.body.password;
+    if(password.length == 0 || password.length > 200){
+        error.password = 'Password must be less than 200 characters'
+    }
+
+    const contact_number = req.body.contact_number;
+    if(contact_number.length == 0 || contact_number.length > 20){
+        error.contact_number= 'Contact number must be less than 20 characters'
+    }
+
+    if (Object.keys(error).length > 0){
+        sendResponse(res, 400, error);
+        return
+    }
+
+    const userData = {
+        name,
+        username,
+        password,
+        email,
+        contact_number
+    };
+
+    await dataLayer.addUser(userData, 1);
+    
+    res.send({
+        message: 'User registered!'
+    })
 })
+
 
 
 router.post('/login', async function(req,res){

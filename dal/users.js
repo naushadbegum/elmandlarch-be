@@ -46,19 +46,18 @@ const addUser = async function (userData, roleId = 1) {
 	return user;
 };
 
-const isUsernameTaken = async function (username) {
-	const user = await User.where({
-		username: username
-	}).fetch({
-		require: false
-	})
-	return user ? true : false
-}
+// const isUsernameTaken = async function (username) {
+// 	const user = await User.where({
+// 		username: username
+// 	}).fetch({
+// 		require: false
+// 	})
+// 	return user ? true : false
+// }
 
 module.exports = {
 	getAllUsers,
     addUser,
 	getUserByCredentials,
 	getBlacklistedToken,
-	isUsernameTaken
 }

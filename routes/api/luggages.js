@@ -11,7 +11,6 @@ router.get('/', async(req,res)=>{
     const searchFields = req.query;
     const luggages = await luggageDataLayer.searchLuggages(searchFields);
     res.send({luggages})
-    // console.log({luggages});
     }
 )
 
@@ -35,11 +34,12 @@ router.get('/search_options', async function (req, res){
 
 })
 
-router.get(':/luggage_id', async function (req, res){
+router.get('/:luggage_id', async function (req, res){
 
     const luggage = await luggageDataLayer.getLuggageById(req.params.luggage_id);
     
     res.send({luggage})
+    
 })
 
 module.exports = router;

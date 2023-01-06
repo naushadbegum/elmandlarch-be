@@ -174,4 +174,23 @@ router.get('/profile', checkIfAuthenticatedJWT, async(req,res)=>{
     });
 })
 
+
+router.post('/logout', async function (req,res){
+    const refreshToken = req.body.refreshToken;
+    if (refreshToken) {
+        jwt.verify(
+            refreshToken,
+            process.env.REFRESH_TOKEN_SECRET,
+            async function (err, tokenData){
+                if (!err){
+                    await userDataLayer.addBlacklistedToken(refreshToken);
+
+                res.send({message: 'See you soon!'})
+                }
+            }
+        );
+    } else {
+        res.send({error: 'no refresh token found'})
+    }
+})
 module.exports = router;

@@ -46,6 +46,15 @@ const addUser = async function (userData, roleId = 1) {
 	return user;
 };
 
+const addBlacklistedToken = async function (refreshToken){
+	const token = new BlacklistedToken();
+	token.set('token', refreshToken);
+	token.set('created_date', new Date());
+	await token.save();
+
+	return token;
+}
+
 // const isUsernameTaken = async function (username) {
 // 	const user = await User.where({
 // 		username: username
@@ -60,4 +69,5 @@ module.exports = {
     addUser,
 	getUserByCredentials,
 	getBlacklistedToken,
+	addBlacklistedToken,
 }

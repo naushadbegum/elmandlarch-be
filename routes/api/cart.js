@@ -1,17 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const cartServices = require('../../services/cart_services');
+const { checkIfAuthenticatedJWT } = require('../../middlewares')
 
 router.get('/', async(req,res)=>{
     
-    const cartItems = await cartServices.getCart(req.session.user.id);
-    console.log(req.session.user.id);
-    // cartItems = response.toJSON()
+    const cartItems = await cartServices.getCart(req.user);
+    cartItems = response.toJSON()
     res.json(cartItems)
 })
 
-router.get('/:variant_id/add', async function (req, res) {
-    const userId = req.session.user.id;
+router.post('/:variant_id/add', checkIfAuthenticatedJWT, async function (req, res) {
+    console.log("called")
+    
+    const userId = req.user.id;
     const variantId = req.params.variant_id;
     const quantity = req.body.quantity;
 

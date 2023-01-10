@@ -4,7 +4,7 @@ const getCartByUserId = async function (userId) {
     const cartItems = await CartItem.collection()
     .where({
         'user_id': userId
-    }).orderBy('id')
+    })
     .fetch({
         require: false,
         withRelated: [
@@ -28,6 +28,7 @@ const getCartItemByUserAndVariant = async function (userId, variantId){
     }).fetch({
         require: false
     });
+    console.log("getCartItemByUserAndVariant", cartItem)
     return cartItem;
 }
 

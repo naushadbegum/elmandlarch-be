@@ -18,10 +18,10 @@ const getCart = async function (userId){
 }
 
 const addToCart = async function (userId, variantId, quantity){
-    
+    console.log("hi");
     try{
     const cartItem = await cartDataLayer.getCartItemByUserAndVariant(userId, variantId);
-
+console.log("cartItem", cartItem);
     const stock = await getCurrentStock(variantId);
 
     if (cartItem){

@@ -2,6 +2,7 @@ const express = require("express");
 const hbs = require("hbs");
 const wax = require("wax-on");
 require("dotenv").config();
+const { checkIfAuthenticated, checkIfAuthenticatedJWT } = require('./middlewares');
 
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -105,7 +106,7 @@ async function main() {
     app.use('/orders', orderRoutes);
     app.use('/checkout', checkoutRoutes);
     app.use('/api/luggages',express.json(), api.luggages);
-    app.use('/api/cart', express.json(), api.cart);
+    app.use('/api/cart', express.json(), checkIfAuthenticatedJWT, api.cart);
     app.use('/api/users', express.json(), api.users);
 }
 

@@ -5,8 +5,9 @@ const Stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const orderDataLayer = require('../../dal/orders');
 const luggageDataLayer = require('../../dal/luggages');
 const cartServices = require('../../services/cart_services');
+const { checkIfAuthenticated, checkIfAuthenticatedJWT } = require('../../middlewares');
 
-router.get('/', async(req,res)=> {
+router.get('/', checkIfAuthenticatedJWT, async(req,res)=> {
     const userId = req.user.id;
     let cartItems = (await CartServices.getCart(userId)).toJSON();
 

@@ -11,7 +11,7 @@ router.post(
     express.raw({ type: 'application/json'}),
     async function (req, res){
         let payload = req.body;
-        console.log("webhook called")
+        // console.log("webhook called")
         let endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
         let sigHeader = req.headers['stripe-signature'];
         let event = null;

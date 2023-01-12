@@ -111,7 +111,7 @@ async function main() {
     app.use('/api/checkout', api.checkout);
     app.use('/api/checkout/process_payment', api.stripe);
     app.use('/api/users', express.json(), api.users);
-    app.use('/api/orders', express.json(), api.orders);
+    app.use('/api/orders', express.json(),checkIfAuthenticatedJWT, api.orders);
 }
 
 

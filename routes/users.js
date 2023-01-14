@@ -23,6 +23,7 @@ router.get('/register', (req,res)=>{
 })
 
 router.post('/register', (req, res) => {
+    console.log(process.env);
     const registerForm = createRegistrationForm();
     registerForm.handle(req, {
         success: async (form) => {

@@ -55,15 +55,6 @@ const addBlacklistedToken = async function (refreshToken){
 	return token;
 }
 
-// const isUsernameTaken = async function (username) {
-// 	const user = await User.where({
-// 		username: username
-// 	}).fetch({
-// 		require: false
-// 	})
-// 	return user ? true : false
-// }
-
 module.exports = {
 	getAllUsers,
     addUser,

@@ -106,6 +106,7 @@ router.post('/login', async function(req,res){
         return
     }
 
+    else {
     const accessToken = generateAccessToken(
         user.get('email'),
         user.get('id'),
@@ -126,6 +127,7 @@ router.post('/login', async function(req,res){
         'accessToken': accessToken,
         'refreshToken': refreshToken
     })
+}
 })
 
 router.post('/refresh', checkIfAuthenticatedJWT, async function (req, res){

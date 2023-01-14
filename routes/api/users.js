@@ -81,7 +81,12 @@ router.post('/register', async function (req, res){
         contact_number
     };
 
-    await userDataLayer.addUser(userData, 1);
+    try{
+        await userDataLayer.addUser(userData, 1);
+    }
+    catch(e){
+console.log(e)
+    }
     
     res.send({
         message: 'User registered!'

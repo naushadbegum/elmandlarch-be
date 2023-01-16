@@ -39,6 +39,7 @@ const createCartItem = async function (userId, variantId, quantity){
         'quantity': quantity
     })
     console.log(cartItem);
+    console.log("addtocartdone")
     await cartItem.save();
     return cartItem;
 }

@@ -42,7 +42,7 @@ const getVariantsByLuggageId = async function (luggageId) {
         luggage_id : luggageId
     })
     .fetch({
-        require: true,
+        require: false,
         withRelated: [
             'color',
             'dimension'

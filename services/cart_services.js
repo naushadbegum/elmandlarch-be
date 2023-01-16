@@ -23,7 +23,7 @@ const addToCart = async function (userId, variantId, quantity){
     const cartItem = await cartDataLayer.getCartItemByUserAndVariant(userId, variantId);
 console.log("cartItem", cartItem);
     const stock = await getCurrentStock(variantId);
-
+console.log("stock here")
     if (cartItem){
         const currentQuantity = parseInt(cartItem.get('quantity'));
         if (currentQuantity + quantity > stock){

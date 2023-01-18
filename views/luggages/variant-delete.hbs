@@ -4,8 +4,8 @@
 <div class="container-fluid">
     <div class="container content-container">
         <div class="h-100 p-3 d-flex flex-column justify-content-center">
-            <h3>Deleting Variant for "{{variant.luggage.model}}"</h3>
-            <div class="alert alert-danger">
+            <h3>Deleting Variant</h3>
+            <div>
                 <p>Are you sure you want to delete the following variant?</p>
                 <div class="alert alert-secondary">
                     <p>Color: {{variant.color.color}}</p>
@@ -17,8 +17,8 @@
                      <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
                     <div class="custom-btn-group">
                         <a href="/luggages/{{variant.luggage_id}}/variants"
-                            class="btn btn-sm btn-dark btn-outline-light">Cancel</a>
-                        <input type="submit" value="Delete Luggage" class="btn btn-sm btn-dark btn-outline-light">
+                            class="login-button btn-sm btn-dark btn-outline-light">Cancel</a>
+                        <input type="submit" value="Delete Luggage" class="login-button btn-sm btn-dark btn-outline-light">
                     </div>
                 </form>
             </div>

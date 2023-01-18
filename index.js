@@ -3,6 +3,9 @@ const hbs = require("hbs");
 const wax = require("wax-on");
 require("dotenv").config();
 const { checkIfAuthenticated, checkIfAuthenticatedJWT } = require('./middlewares');
+const helpers = require('handlebars-helpers')({
+  handlebars: hbs.handlebars
+});
 
 const session = require('express-session');
 const flash = require('connect-flash');

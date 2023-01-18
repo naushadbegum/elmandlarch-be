@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "lemon";
+  font-weight: 900;
+  src: url('./lemonmilk.otf') format('opentype');
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,4 +13,22 @@ body {
     font-family: 'Fira Sans', sans-serif;
     background-color: #edf2de !important;
     color: #80471c !important;
+}
+
+.navbar-brand {
+   font-family: "lemon";
+   color: #80471c !important;
+}
+
+.logout-button, .login-button, .register-button{
+  border-radius: 0 !important;
+  color: white;
+  background-color: #80471c !important;
+  border-color: transparent;
+}
+
+.login-button:hover, .logout-button:hover, .register-button:hover{
+  background-color: #fac60f !important;
+  color: #80471c;
+  border-color: transparent;
 }
